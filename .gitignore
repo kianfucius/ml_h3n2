@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Fasta files, since we can't store these
+*.fasta
+
+# Visual Studio Code
+.vscode/*
