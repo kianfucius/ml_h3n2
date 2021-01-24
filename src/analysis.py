@@ -54,6 +54,22 @@ def analyze_repetitions(sample_data, num_reps=50):
         if seen_dict[segment] > num_reps:
             print(f'{segment[:10]}...{segment[-10:]} | {seen_dict[segment]}')
 
+def analyze_mean_length(sample_data):
+    # Again, we only care about HA segments.
+    # Not going to use list comprehension because HA isn't guaranteed to exist
+    # which can make our code somewhat messy.
+
+    all_len = []
+
+    for strain in sample_data.values():
+        if "HA" in strain.segments:
+            all_len.append(len(strain.segments["HA"]))
+
+    # Floor division for output simplicity.
+    mean = sum(all_len) // len(all_len)
+    print()
+    print(f'The average length of the {len(all_len)} HA segments is about {mean} nucleotides.')
+
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', default='../sample_data', type=dir_path,
@@ -89,6 +105,9 @@ def main():
     # Currently set to 50, because running this against the international dataset
     # produces a /very/ long output. e.g. analyze_repetitions(data, num_reps=20)
     analyze_repetitions(data)
+
+    # Determine the average length of HA segments.
+    analyze_mean_length(data)
 
 if __name__ == "__main__":
     main()
